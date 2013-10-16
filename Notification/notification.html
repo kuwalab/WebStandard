@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>通知のテスト</title>
+  <style>
+input {
+  background-color: #0000ff;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+  border: none;
+  outline: 0;
+}
+  </style>
+ </head>
+ <body>
+  <input type="button" id="request" value="通知の許可"><br>
+  <input type="button" id="fire" value="通知!!">
+  <script>
+// 参考 https://developer.mozilla.org/ja/docs/Web/API/notification
+(function() {
+  if (!window.Notification) {
+    // Notificationがなければ無視
+    return;
+  }
+  var permission = 'denied';
+  document.getElementById('request').addEventListener('click', function() {
+    // permissionを要求する。pは要求の結果
+    // Notificaton.permissionはFirefox 24にはあるが、Chrome 30にはない
+    // 現状では、requestPermissionのコールバックの引数でパーミッションを取得する
+    Notification.requestPermission(function(p) {
+      console.log(p);
+      permission = p;
+      console.log('N' + Notification.permission);
+    });
+  });
+  document.getElementById('fire').addEventListener('click', function() {
+    if (permission !== 'granted') {
+      console.log('not allow')
+      return;
+    }
+    new Notification('This is a test', { tag: 'aaa', body: '本文', icon: 'icon.png' });
+  });
+})();
+  </script>
+ </body>
+</html>
+

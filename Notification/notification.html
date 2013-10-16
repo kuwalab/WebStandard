@@ -29,10 +29,8 @@ input {
     // permissionを要求する。pは要求の結果
     // Notificaton.permissionはFirefox 24にはあるが、Chrome 30にはない
     // 現状では、requestPermissionのコールバックの引数でパーミッションを取得する
-    Notification.requestPermission(function(p) {
-      console.log(p);
-      permission = p;
-      console.log('N' + Notification.permission);
+    Notification.requestPermission(function(selectedPermission) {
+      permission = selectedPermission;
     });
   });
   document.getElementById('fire').addEventListener('click', function() {
@@ -40,7 +38,7 @@ input {
       console.log('not allow')
       return;
     }
-    new Notification('This is a test', { tag: 'aaa', body: '本文', icon: 'icon.png' });
+    new Notification('通知のタイトル', { tag: 'tag', body: '通知の本文', icon: 'icon.png' });
   });
 })();
   </script>

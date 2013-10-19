@@ -12,6 +12,15 @@ input {
   border: none;
   outline: 0;
 }
+
+input:hover {
+  cursor: pointer;
+}
+
+input:active {
+  cursor: pointer;
+  background-color: #000099;
+}
   </style>
  </head>
  <body>
@@ -38,7 +47,16 @@ input {
       console.log('not allow');
       return;
     }
-    new Notification('通知のタイトル', { tag: 'tag', body: '通知の本文', icon: 'icon.png' });
+    var notify = new Notification('通知のタイトル', { tag: 'tag', body: '通知の本文', icon: 'icon.png' });
+    // クリックでWebページを開く
+    notify.addEventListener('click', function() {
+      open('https://github.com/kuwalab/WebStandard');
+    });
+    
+    // 5秒経過で消す。
+    setTimeout(function() {
+      notify.close();
+    }, 5000);
   });
 })();
   </script>

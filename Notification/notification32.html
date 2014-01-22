@@ -1,0 +1,60 @@
+<!DOCTYPE html lang="ja">
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>通知のテスト</title>
+  <style>
+input {
+  background-color: #0000ff;
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+  border: none;
+  outline: 0;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
+input:active {
+  cursor: pointer;
+  background-color: #000099;
+}
+  </style>
+ </head>
+ <body>
+  <input type="button" id="request" value="通知の許可"><br>
+  <input type="button" id="fire" value="通知!!">
+  <script>
+// 参考 https://developer.mozilla.org/ja/docs/Web/API/notification
+(function() {
+  if (!window.Notification) {
+    // Notificationがなければ無視
+    return;
+  }
+  document.getElementById('request').addEventListener('click', function() {
+    // permissionを要求する。
+    Notification.requestPermission();
+  });
+  document.getElementById('fire').addEventListener('click', function() {
+    if (Notification.permission !== 'granted') {
+      console.log('not allow');
+      return;
+    }
+    var notify = new Notification('通知のタイトル', { tag: 'tag', body: '通知の本文', icon: 'icon.png' });
+    // クリックでWebページを開く
+    notify.addEventListener('click', function() {
+      open('https://github.com/kuwalab/WebStandard');
+    });
+    
+    // 5秒経過で消す。
+    setTimeout(function() {
+      notify.close();
+    }, 5000);
+  });
+})();
+  </script>
+ </body>
+</html>
+

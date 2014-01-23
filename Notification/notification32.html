@@ -24,18 +24,33 @@ input:active {
   </style>
  </head>
  <body>
+  Notification: <span id="status"></span><br>
   <input type="button" id="request" value="通知の許可"><br>
   <input type="button" id="fire" value="通知!!">
   <script>
 // 参考 https://developer.mozilla.org/ja/docs/Web/API/notification
 (function() {
+  $status = document.getElementById('status');
   if (!window.Notification) {
     // Notificationがなければ無視
+    $status.innerHTML = '未対応';
     return;
   }
+
+  var viewStatus = function() {
+    if (Notification.permission === 'granted') {
+      $status.innerHTML = '許可';
+    } else {
+      $status.innerHTML = '不許可';
+    }
+  };
+
+  viewStatus();
+
   document.getElementById('request').addEventListener('click', function() {
     // permissionを要求する。
     Notification.requestPermission();
+    viewStatus();
   });
   document.getElementById('fire').addEventListener('click', function() {
     if (Notification.permission !== 'granted') {
@@ -57,4 +72,3 @@ input:active {
   </script>
  </body>
 </html>
-
